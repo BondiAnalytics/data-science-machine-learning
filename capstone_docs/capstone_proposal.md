@@ -6,29 +6,32 @@ Today, Right Now.
 
 ## Domain Background
 
-Please provide background information of the domain from which the project is proposed.  If your project is all about cucumbers, tell us a bit about cucumbers. We don't want to know every detail ever, but enough to be familiar and have an intuition into the domain. If you have done any research into the problem, please cite your sources in this section.
+The Stack Overflow dataset is a seminal dataset used by tech market researchers, because it is open, comprehensive, and behavioral in nature. It was first made available for public consumption in 2010, and encompasses not just questions and answer posts from the developer community but also technology tags associated with each post. As a result, these tags act as a good market proxy of user adoption, interest or disterest from a behavioral perspective: the more posts with a certain tag, the more indicative interest of that certain tag. The time series nature of this dataset also make it possible to gauge the waxing and waning of a tag, while also indicating changing affiliation among tags. Finally, additional metadata about users, badge contests and an annual developer survey provide additional context to help make business/actionable decisions, leading to measurable outcomes.
+
+Thus, for my capstone project I would like to analyze technology tags in the Stack Overflow dataset in order to better understand technology adoption curves and affiliations among technologies, depending on certain cohorts of developers. My team and I at Microsoft perfomed a similar analysis in 2016, where we found that OSS developers gravitated towards AWS and Google, as there were very few OSS offerings on Azure. We also realized that Microsoft had not reached out to OSS developers proactively, even with the limited offers. This 'wake up call' generated massive investment in development and marketing of OSS technologies on the Azure cloud/platform.
+
+Five years later, Microsoft would like to know if their efforts have paid off. They have seen fantastic growth in their OSS services and technologies, but are they keeping up with the market? Have they been able bring new developers onto their platform, or is this adoption coming from existing developers who have become 'polyglots'? And have the 'islands of technologies' that used to center around just AWS and Google begun to diffuse and include Azure?  ...or is Azure still an island unto itself?
+
 
 ## Problem Statement
 
-In this section, clearly describe the problem that is to be solved. What is the problem that needs a solution. Specifically what is the actionable intelligence your machine learning will provide? The problem should be quantifiable (the problem can be expressed in mathematical or logical terms) , measurable (the problem can be measured by some metric and clearly observed), and replicable (the problem can be reproduced and occurs more than once).
+The Stack Overflow dataset is massive with six primary relational tables and hosted on Google Big Query, making it expensive to analyze the entire dataset. 
 
-This step can be tricky to write well.  People often like to give their solutions within the problem statement, don't make that mistake.  Here is an example:
+Therefore, I will need to take a sample of the data (no more than 16k rows of the 2.8m row dataset), and build models and classifiers that could be applied with certain accuracy and precision across the entire corpus. 
 
->I will use XGBoost to solve the kaggle fish competition.
-
-This is _not_ a problem.  It's a solution.  The problem is "automatically identify what kinds of fish are in a given picture"  The solution may be "use xgboost"
-
-So what exactly is the problem you are going to attempt to solve? Try to frame it in familiar ML terms, is it classification? Regression? "Give a dataset of .... the goal is to accurately predict / model / classify X"
-
-Nearly all ML problems can be reduced to that form and this is very helpful because it narrows the scope of what you are actually trying to accomplish. It's very easy to get lost in the _bigger_ problem of the domain, but we want to stay focused on the bite-sized ML portion you are going to attempt.
 
 ## Datasets and Inputs
 
-The dataset(s) and/or input(s) being considered for the project should be thoroughly described, such as how they relate to the problem and why they should be used. Information such as how the dataset or input is (was) obtained, and the characteristics of the dataset or input, should be included with relevant references and citations as necessary.  You don't need to be worried about citation format, just make sure to cite your sources so we can follow the trail. 
+Given that I am interested in who asks questions about certain tags, I will use only two of the six relational tables: Users and Post-Questions. Although it would be interesting to perform an NPL analysis of the questions (and respective answers - a separate relational table), the volume of data concentrated in this feature makes it prohibitively expensive. Thus, I will drop this feature prior to building a sample.
+
+Given that I will be analyzing data along a time series (comparing tends/classifiers of pre-2016 and of 2016-2021), the sample dataset needs to be cut along a percentage of the entire dataset versus on a dimensional basis. However, we also need to be aware that not all tags will be captured in the sample dataset. Given that the business question relates to understanding general trends of OSS technology adoption, the sample dataset will be further cut down to include just the top 500 tags, with "Azure", "GCP" and "AWS" always included.
+
 
 ## Solution Statement
 
-In this section, clearly describe your proposed solution to the problem. What machine learning techniques are you proposing to do with the dataset. How does that solve the problem you described earlier? 
+Clustering algorithms, such as Kmeans and DBSCAN, will help to create clusters of tags representing affiliated technologies. We may be able to further contextualize clusters with metadata or x-y axes that could help to explain overall direction and dimensionality. We can also calculate distances between islands and discarded tags to see if there are particular tags that fall in between clusters, and if certain clusters are more closely affiliated.
+
+Random Forest classifiers will help to understand how often certain developer cohorts ask questions and which tags are most often used within questions (there can be multiple tags per question). I should be able to join the Users and Posts tables with the User.id key to build a 1:many relationship for users to posts. I'll be able to then identify which users post questions and which tags they use, ultimately determining which types of developers use OSS technologies only or OSS and Windows/Azure technologies as well. I may also be able to distinguish additional developer types, such as mobile developers, IoT/device developers, etc.
 
 ## Benchmark Model
 
