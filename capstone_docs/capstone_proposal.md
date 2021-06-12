@@ -17,7 +17,7 @@ Five years later, Microsoft would like to know if their efforts have paid off. T
 
 The Stack Overflow dataset is massive with six primary relational tables and hosted on Google Big Query, making it expensive to analyze the entire dataset. 
 
-Therefore, I will need to take a sample of the data (no more than 16k rows of the 2.8m row dataset), and build models and classifiers that could be applied with certain accuracy and precision across the entire corpus. 
+Therefore, I will need to take a random sample of the data (50%), and build models and classifiers that could be applied with certain accuracy and precision across the entire corpus. 
 
 
 ## Datasets and Inputs
